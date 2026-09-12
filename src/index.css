@@ -508,9 +508,14 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
   opacity: 0;
   transform: translateY(-4px);
 }
+.pet-bubble--portal { display: none; }
 @keyframes bubble-in {
   from { opacity: 0; transform: translateY(6px) scale(0.96); }
   to   { opacity: 1; transform: none; }
+}
+@keyframes bubble-in-portal {
+  from { opacity: 0; transform: translate(-50%, 6px) scale(0.96); }
+  to   { opacity: 1; transform: translate(-50%, 0) scale(1); }
 }
 
 .pet-inner {
@@ -1184,6 +1189,7 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
   white-space: nowrap;
   text-wrap: nowrap;
 }
+.contact-sub-mobile { display: none; }
 .contact-actions {
   width: min(100%, 950px);
   display: flex;
@@ -1192,6 +1198,7 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
   justify-content: center;
   margin-top: clamp(2rem, 4vh, 2.75rem);
 }
+.mobile-phone-link { display: none; }
 .copy-contact-button { position: relative; }
 .copy-contact-button::after {
   content: attr(data-copy-hint);
@@ -1398,9 +1405,10 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
   .about-copy .about-lead { font-size: clamp(1.3rem, 5.5vw, 1.6rem); }
   .education-entry { grid-template-columns: 1fr; gap: 0.65rem; }
   .education-period { padding-top: 0; }
-  .education-meta { display: flex; flex-direction: row; align-items: baseline; gap: 0.8rem; padding-top: 0; text-align: left; }
-  .education-program { justify-content: flex-start; }
-      .education-gpa { margin-top: 0; }
+  .education-meta { display: flex; flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 0.5rem 0.8rem; padding-top: 0; text-align: left; }
+  .education-program { justify-content: flex-start; flex-wrap: wrap; white-space: normal; }
+  .education-degree { white-space: normal; }
+      .education-gpa { margin-top: 0; white-space: nowrap; }
       .education-primary-line { white-space: normal; }
       .education-honors { gap: 0.45rem; }
       .tl-heading { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
@@ -1409,46 +1417,112 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
       .tl-detail-trigger { grid-column: 1; grid-template-columns: 1fr; gap: 0.5rem; }
   .contact-sub { max-width: 60ch; white-space: normal; }
   .contact-foot { display: flex; flex-wrap: wrap; justify-content: space-between; }
-  .proj-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto; gap: 0.85rem; align-items: start; }
-  .github-item-index { padding-top: 0.2rem; }
-  .proj-row .github-item-tags { grid-column: 2 / -1; justify-content: flex-start; }
-  .proj-row .project-link-icons { grid-column: 3; grid-row: 1; padding-top: 0.1rem; min-width: auto; }
+  /* 日期和链接独占首行，正文不再挤进桌面的窄列。 */
+  .proj-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "date links" "main main" "tags tags";
+    gap: 0.55rem 0.75rem;
+    align-items: start;
+  }
+  .github-item-index { grid-area: date; align-self: center; white-space: nowrap; }
+  .github-item-main { grid-area: main; }
+  .proj-row .github-item-tags { grid-area: tags; justify-content: flex-start; }
+  .proj-row .project-link-icons { grid-area: links; min-width: 0; min-height: 44px; gap: 0.25rem; }
+  .project-link-icon { width: 44px; height: 44px; }
+  .project-link-icon-svg { width: 1.1rem; height: 1.1rem; }
+  .github-item-description { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+  :is(.education-entry, .tl-item, .proj-row) { --record-hover-text: var(--text-2); }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .stat:nth-child(2) { border-right: none; }
   .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
 }
 
 @media (max-width: 767px) {
+  :root { --nav-h: 64px; --shell: calc(100% - 2.5rem); }
+  .nav-inner { width: var(--shell); }
+  .brand { font-size: 0.85rem; }
+  .nav-links { gap: 0.5rem; }
+  .theme-toggle { width: 40px; height: 40px; }
+  .theme-toggle-icon { width: 0.95rem; height: 0.95rem; }
+  .nav-links .btn-sm { height: 40px; padding-inline: 0.65rem; font-size: 0.75rem; }
+
+  .hero {
+    min-height: auto;
+    padding-top: calc(var(--nav-h) + 2rem);
+    padding-bottom: 2.5rem;
+  }
+  .hero-inner { gap: 1.75rem; }
+  .hero-copy { width: 100%; text-align: left; }
+  .hero-sub strong { font-size: clamp(1rem, 4.5vw, 1.25rem); line-height: 1.5; }
+  .hero-intro-copy { display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.9375rem; line-height: 1.8; }
+  .hero-intro-copy br { display: none; }
+  .hero-tags { justify-content: flex-start; gap: 0.45rem; margin-top: 1.25rem; }
+  .hero-cta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; margin-top: 1.5rem; }
+  .hero-cta .btn {
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    min-width: 0;
+    height: auto;
+    min-height: 64px;
+    padding: 0.625rem 0.25rem;
+    border-radius: 14px;
+    font-size: 0.75rem;
+  }
+  .hero-visual, .contact-pet { --pet-embed-height: clamp(140px, 38vw, 170px); }
+
+  .about-section { padding-top: 1.25rem; }
+  :is(.about-section, .experience-section, .work-section) .sec-title { margin-top: 0; }
+  .education-faculty { display: block; margin: 0.25rem 0 0; }
+  .education-program { gap: 0.4rem 0.75rem; }
+  .tl-company { font-size: 0.95rem; }
+  .experience-modal-close { width: 44px; height: 44px; }
+  .proj-head { align-items: center; gap: 0.75rem; }
+  .proj-head .btn-sm { height: 44px; padding-inline: 0.9rem; font-size: 0.78rem; }
+  .proj-row { padding: 1rem 0 1.25rem; }
+  .work-section { padding-bottom: 1.5rem; }
+
   .contact {
-    --contact-shell: calc(100% - 40px);
+    --contact-shell: var(--shell);
+    min-height: 100svh;
     justify-content: flex-start;
-    padding-top: calc(var(--nav-h) + clamp(2rem, 4vh, 2.75rem));
-    padding-bottom: calc(clamp(1.5rem, 3vh, 2rem) + env(safe-area-inset-bottom));
+    padding-top: 2.5rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
   }
   .contact-title {
-    font-size: clamp(2.1rem, 9.4vw, 3rem);
-    line-height: 1.1;
-    text-align: center;
+    font-size: clamp(1.25rem, 5.6vw, 1.625rem);
+    line-height: 1.5;
+    text-align: left;
   }
+  .contact-title-line { display: block; }
+  .contact-title-line + br + .contact-title-line { margin-top: 0.25rem; }
   .contact-title br { display: none; }
   .contact-sub {
     max-width: 100%;
-    margin-top: clamp(1.5rem, 3vh, 2rem);
-    font-size: 1rem;
-    text-align: center;
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.8;
+    text-align: left;
   }
+  .contact-sub-desktop { display: none; }
+  .contact-sub-mobile { display: block; }
   .contact-actions {
     width: min(100%, 22rem);
     flex-direction: column;
     align-items: stretch;
-    gap: 1.5vh;
-    margin-top: clamp(2rem, 4vh, 2.75rem);
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    margin-inline: auto;
   }
   .contact-actions .btn {
     width: 100%;
     min-height: 44px;
     justify-content: center;
+    padding-inline: 1rem;
+    font-size: 0.875rem;
   }
+  .mobile-phone-copy { display: none; }
+  .mobile-phone-link { display: inline-flex; }
   .contact-pet {
     margin-top: clamp(0.75rem, 1.5vh, 1.5rem);
     padding-top: clamp(0.5rem, 1vh, 0.75rem);
@@ -1457,20 +1531,208 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 1rem); }
   .contact-foot {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.5vh 2vw;
+    gap: 0.4rem;
     margin-top: 0;
     padding-inline: 20px;
     padding-top: clamp(1rem, 2vh, 1.5rem);
     align-items: start;
+    font-size: 0.68rem;
   }
   .contact-foot > span:first-child,
   .contact-foot > span:nth-child(2),
   .contact-foot > span:last-child {
     min-width: 0;
+    grid-column: 1 / -1;
     justify-self: center;
     text-align: center;
   }
   .contact-foot > span:last-child { grid-column: 1 / -1; }
+  .contact-socials { position: relative; gap: 0.25rem; }
+  .contact-social { justify-content: center; width: 44px; height: 44px; }
+  .footer-copy-feedback { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+}
+
+/* 移动端记录与收尾的独立信息层级；桌面端继续使用上面的原有结构。 */
+@media (max-width: 767px) {
+  .m-hero-description {
+    margin-top: 1.2rem;
+  }
+
+  .m-hero-links {
+    margin-top: 1.25rem;
+  }
+
+  .education-entry {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .education-details {
+    display: contents;
+  }
+  .education-primary-line {
+    order: 2;
+    display: flex;
+    align-items: baseline;
+    white-space: normal;
+  }
+  .education-period { order: 1; }
+  .education-school {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+  .education-institution { display: block; }
+  .education-faculty {
+    display: inline-block;
+    margin: 0 0 0 0.75rem;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .education-meta {
+    order: 3;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.8rem;
+    padding-top: 0;
+    text-align: left;
+  }
+  .education-program {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+  .education-degree { white-space: normal; }
+  .education-gpa { display: none; }
+  .education-honors {
+    order: 4;
+    min-width: 0;
+    margin-top: 0.05rem;
+  }
+
+  .experience-timeline .tl-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "when"
+      "role"
+      "company"
+      "description"
+      "extra";
+    gap: 0.35rem;
+  }
+  .experience-timeline .tl-detail-trigger,
+  .experience-timeline .tl-body { display: contents; }
+  .experience-timeline .tl-when { grid-area: when; padding-top: 0; }
+  .experience-timeline .tl-heading {
+    grid-area: role;
+    align-items: baseline;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  .experience-timeline .tl-company {
+    grid-area: company;
+    padding-top: 0;
+    text-align: left;
+    white-space: normal;
+  }
+  .experience-timeline .tl-body > p:not(.tl-extra) {
+    grid-area: description;
+    margin-top: 0.25rem;
+  }
+  .experience-timeline .tl-body > .tl-extra {
+    grid-area: extra;
+    margin-top: 0.25rem !important;
+  }
+  .experience-timeline .tl-detail-hint { display: none; }
+  .experience-timeline .tl-detail-trigger:focus-visible .tl-heading {
+    outline: 2px solid var(--accent);
+    outline-offset: 0.35rem;
+    border-radius: 4px;
+  }
+
+  .work-section .proj-row {
+    grid-template-areas:
+      "date links"
+      "main main";
+  }
+  .work-section .github-item-tags { display: none; }
+
+  .contact-title,
+  .contact-sub { text-align: center; }
+  .contact-sub { display: block; width: 100%; }
+  .contact-sub-desktop { display: none !important; }
+  .contact-sub-mobile { display: block !important; }
+
+  .contact-foot {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding-inline: max(1rem, calc((100% - var(--shell)) / 2));
+  }
+  .contact-foot > * {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .contact-foot > span:first-child {
+    font-size: 0;
+    flex: 0 0 auto;
+    justify-self: center;
+    white-space: nowrap;
+  }
+  .contact-foot > span:first-child::before {
+    content: '© 2026 Kiwi';
+    color: var(--text-3);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+  }
+  .contact-foot > span:nth-child(2) { display: none; }
+  .contact-foot > span:last-child {
+    flex: 0 0 auto;
+    grid-column: auto;
+    justify-self: center;
+  }
+  .contact-socials { justify-content: center; gap: 0.35rem; }
+  .contact-social { width: 32px; height: 32px; }
+  .contact-social-divider { display: none; }
+  .contact-foot .footer-copy-feedback {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .contact-actions { position: relative; }
+  .contact-pet .pet-bubble { display: none; }
+  .contact-actions > .pet-bubble--portal {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 0.75rem);
+    z-index: 4;
+    margin: 0;
+    transform: translate(-50%, 0);
+    animation-name: bubble-in-portal;
+  }
+  .contact-actions > .pet-bubble--portal.pet-bubble--out {
+    transform: translate(-50%, -4px);
+    animation: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  /* 触摸后用复制成功提示反馈，避免悬浮提示停留在相邻按钮上方。 */
+  .copy-contact-button:hover:not(:focus-visible)::after,
+  .contact-social-tooltip:hover:not(:focus-visible)::after,
+  .project-link-icon:hover:not(:focus-visible)::after { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

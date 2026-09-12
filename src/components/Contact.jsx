@@ -68,21 +68,21 @@ async function copyText(value) {
   if (!copied) throw new Error('Copy failed')
 }
 
-function CopyContactButton({ kind, value, Icon, copied, onCopy }) {
+function CopyContactButton({ kind, value, displayValue = value, Icon, copied, onCopy, className = '' }) {
   const isCopied = copied === kind
   const label = kind === 'email' ? '邮箱' : '电话'
 
   return (
     <button
       type="button"
-      className="btn btn-ghost copy-contact-button"
+      className={`btn btn-ghost copy-contact-button ${className}`.trim()}
       onClick={() => onCopy(kind, value)}
       aria-label={`${isCopied ? '已复制' : '复制'}${label} ${value}`}
       title={isCopied ? '已复制' : `点击复制${label} · ${kind === 'email' ? 'mailto' : 'tel'}`}
       data-copy-hint={isCopied ? '✓ 已复制' : `复制${label}`}
     >
       {isCopied ? <CheckIcon /> : <Icon />}
-      {value}
+      {displayValue}
     </button>
   )
 }
@@ -93,6 +93,7 @@ export default function Contact() {
   const [footerIntent, setFooterIntent] = useState(false)
   const copyTimer = useRef(0)
   const petRef = useRef(null)
+  const contactActionsRef = useRef(null)
   const isContactCopied = copied === 'email' || copied === 'phone'
 
   useEffect(() => {
@@ -157,15 +158,22 @@ export default function Contact() {
             <span className="hover-accent contact-title-line">正在<em>寻找 2027 届秋招</em>机会</span><br />
             <span className="hover-accent contact-title-line">聚焦 <em>AI Agent / 大模型应用</em>方向</span>
           </h2>
-          <p className="contact-sub hover-accent">
+          <p className="contact-sub contact-sub-desktop hover-accent">
             如果你正在寻找 AI Agent / 大模型应用方向的工程师，或者也对 Agent 架构、RAG 与 AI 产品工程化感兴趣，欢迎联系我。
+          </p>
+          <p className="contact-sub contact-sub-mobile hover-accent">
+            如果你正在寻找 Agent / 大模型应用方向的工程师，或者对 Agent、RAG 与 AI 产品工程化感兴趣，欢迎联系我。
           </p>
         </Reveal>
 
         <Reveal delay="d1">
-          <div className="contact-actions">
+          <div className="contact-actions" ref={contactActionsRef}>
             <CopyContactButton kind="email" value={email.v} Icon={MailIcon} copied={copied} onCopy={handleCopy} />
-            <CopyContactButton kind="phone" value={phone.v} Icon={PhoneIcon} copied={copied} onCopy={handleCopy} />
+            <CopyContactButton className="mobile-phone-copy" kind="phone" value={phone.v} displayValue={`+86 ${phone.v}`} Icon={PhoneIcon} copied={copied} onCopy={handleCopy} />
+            <a className="btn btn-ghost mobile-phone-link" href={`tel:+86${phone.v.replace(/\D/g, '')}`} aria-label={`拨打电话 +86 ${phone.v}`}>
+              <PhoneIcon />
+              +86 {phone.v}
+            </a>
             <a className="btn btn-ghost" href="https://github.com/kiwiwu02" target="_blank" rel="noopener noreferrer"><GitHubIcon />github.com/kiwiwu02</a>
           </div>
           <span className={`copy-feedback ${isContactCopied ? 'is-visible' : ''}`} role="status" aria-live="polite">
@@ -174,7 +182,7 @@ export default function Contact() {
         </Reveal>
 
         <Reveal className="contact-pet" delay="d2">
-          <Pet ref={petRef} mode="embed" profile="contact" height="clamp(198px, 21.6vw, 291px)" />
+          <Pet ref={petRef} mode="embed" profile="contact" bubbleTargetRef={contactActionsRef} height="clamp(198px, 21.6vw, 291px)" />
         </Reveal>
       </div>
 

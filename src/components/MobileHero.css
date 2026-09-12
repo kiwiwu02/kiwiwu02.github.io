@@ -1,0 +1,130 @@
+/* 手机首屏独立排版；其余章节继续使用原有组件与样式。 */
+.m-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: calc(var(--nav-h) + 2.25rem) 0 2rem;
+}
+
+.m-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(var(--hero-grid-rgb), 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(var(--hero-grid-rgb), 0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: linear-gradient(to bottom, #000, transparent 85%);
+  pointer-events: none;
+}
+
+.m-hero-inner {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 0;
+}
+
+.m-hero-title {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(2.4rem, 10.8vw, 3.24rem);
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 1.12;
+}
+
+.m-hero-title > span { display: block; }
+
+.m-hero-title .m-hero-role {
+  margin-top: 0.3rem;
+  color: var(--accent);
+  font-size: clamp(1.74rem, 8.7vw, 2.76rem);
+  letter-spacing: -0.035em;
+  line-height: 1.28;
+}
+
+.m-hero-role .hero-headline-letter { color: var(--accent); }
+.m-hero-role .hero-headline-letter::before,
+.m-hero-role .hero-headline-letter::after { color: var(--text); }
+
+.m-hero-description {
+  display: block;
+  max-width: 32rem;
+  margin-top: 1.4rem;
+  color: var(--text-2);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.m-hero-links {
+  display: flex;
+  width: min(100%, 22rem);
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+  margin-inline: auto;
+}
+
+.m-hero-links .btn {
+  width: 100%;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 0;
+  height: 52px;
+  padding-inline: 1rem;
+  font-size: 0.875rem;
+}
+
+.m-hero-links svg { flex: 0 0 auto; width: 1rem; height: 1rem; }
+
+.m-hero-pet {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: clamp(210px, 52vw, 230px);
+  margin-top: 0;
+  padding-top: 1.25rem;
+}
+
+/* 矮屏设备收紧首屏，保证按钮和宠物仍在同一屏内可见。 */
+@media (max-width: 767px) and (max-height: 700px) {
+  .m-hero {
+    padding-top: calc(var(--nav-h) + 1.25rem);
+    padding-bottom: 1rem;
+  }
+
+  .m-hero-title {
+    font-size: clamp(2rem, 9.8vw, 2.4rem);
+    line-height: 1.08;
+  }
+
+  .m-hero-title .m-hero-role {
+    font-size: clamp(1.45rem, 8vw, 2.1rem);
+    line-height: 1.2;
+  }
+
+  .m-hero-description {
+    margin-top: 1rem;
+    font-size: 1rem;
+    line-height: 1.45;
+  }
+
+  .m-hero-links {
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .m-hero-links .btn { height: 44px; }
+
+  .m-hero-pet {
+    height: clamp(120px, 32vw, 145px);
+    padding-top: 0.75rem;
+  }
+
+  .m-hero-pet .pet-sprite { height: clamp(108px, 30vw, 125px) !important; }
+}

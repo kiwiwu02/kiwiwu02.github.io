@@ -21,7 +21,8 @@ const FREE_TURNS = 2          // 底部跑约两圈（折返次数）后自动�
  * mode="roam"  —— 休眠中（当前 App 未挂载）；保留代码为可选能力，启用条件见 docs/pet-design-system.md §13。
  * mode="embed" —— 当前启用：嵌在卡片里，做 idle / 注视 / 倾斜 / 点击回应；双击可释放（free）并落到底部行走。
  */
-const Pet = forwardRef(function Pet({ mode = 'embed', height = 240, autoWave = false, className = '', profile: profileName = 'hero' }, ref) {
+const Pet = forwardRef(function Pet({ mode = 'embed', height = 240, autoWave = false, className = '', profile: profileName = 'hero', bubbleTargetRef = null }, ref) {
+  const spriteHeight = typeof height === 'number' ? `${height}px` : height
   const petProfile = petProfiles[profileName] ?? petProfiles.hero
   const pools = petProfile.pools
   const wrapRef = useRef(null)
@@ -626,6 +627,14 @@ const Pet = forwardRef(function Pet({ mode = 'embed', height = 240, autoWave = f
 
   const roam = mode === 'roam'
   const free = isFree
+  const bubble = !hidden && line && <span className={`pet-bubble ${leaving ? 'pet-bubble--out' : ''}`} aria-hidden="true">{line}</span>
+  const portalBubble = bubbleTargetRef?.current && !hidden && line
+    ? createPortal(
+      <span className={`pet-bubble pet-bubble--portal ${leaving ? 'pet-bubble--out' : ''}`} aria-hidden="true">{line}</span>,
+      bubbleTargetRef.current,
+    )
+    : null
+
   const stage = (
     <div
       className={`pet ${free ? 'pet--free' : roam ? 'pet--roam' : 'pet--embed'} ${hidden ? 'is-hidden' : ''} ${className}`}
@@ -634,18 +643,18 @@ const Pet = forwardRef(function Pet({ mode = 'embed', height = 240, autoWave = f
       data-pet-free={free ? 'true' : undefined}
       tabIndex={0}
     >
-      {!hidden && line && <span className={`pet-bubble ${leaving ? 'pet-bubble--out' : ''}`} aria-hidden="true">{line}</span>}
+      {bubble}
       <div className="pet-inner" ref={innerRef}>
         <div className="pet-stage" ref={stageRef}>
           <span className="pet-dust" ref={dustRef} aria-hidden="true" />
-          <img className="pet-sprite" ref={imgRef} src={frameSrc('idle', 0)} alt="Kiwi 宠物" width={155} height={204} decoding="async" style={{ height }} draggable="false" />
+          <img className="pet-sprite" ref={imgRef} src={frameSrc('idle', 0)} alt="Kiwi 宠物" width={155} height={204} decoding="async" style={{ height: mode === 'embed' ? `var(--pet-embed-height, ${spriteHeight})` : height }} draggable="false" />
         </div>
       </div>
     </div>
   )
 
-  if (free && typeof document !== 'undefined') return createPortal(stage, document.body)
-  return roam ? <div className="pet-roam-layer">{stage}</div> : stage
+  if (free && typeof document !== 'undefined') return <>{createPortal(stage, document.body)}{portalBubble}</>
+  return <>{roam ? <div className="pet-roam-layer">{stage}</div> : stage}{portalBubble}</>
 })
 
 export default Pet
