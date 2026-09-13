@@ -167,3 +167,18 @@ test('关键交互使用固定 analytics 事件名', () => {
   assert.match(contact, /trackAnalyticsEvent\('contact_click'/)
   assert.doesNotMatch(contact, /trackAnalyticsEvent\([^\n]*(email\.v|phone\.v|value)/)
 })
+
+test('仓库提供 Umami 配置模板、工作流注入变量且 README 有配置说明', () => {
+  const envExample = read('.env.example')
+  const workflow = read('.github/workflows/deploy-pages.yml')
+  const readme = read('README.md')
+
+  assert.match(envExample, /VITE_UMAMI_WEBSITE_ID=/)
+  assert.match(envExample, /VITE_UMAMI_SCRIPT_URL=https:\/\/cloud\.umami\.is\/script\.js/)
+  assert.match(workflow, /VITE_UMAMI_WEBSITE_ID:/)
+  assert.match(workflow, /vars\.UMAMI_WEBSITE_ID/)
+  assert.match(workflow, /VITE_UMAMI_SCRIPT_URL:/)
+  assert.match(workflow, /vars\.UMAMI_SCRIPT_URL/)
+  assert.match(readme, /Umami/)
+  assert.match(readme, /UMAMI_WEBSITE_ID/)
+})

@@ -33,6 +33,9 @@ jobs:
         run: npm test
 
       - name: Build static site
+        env:
+          VITE_UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
+          VITE_UMAMI_SCRIPT_URL: ${{ vars.UMAMI_SCRIPT_URL }}
         run: npm run build:static
 
       - name: Configure GitHub Pages
