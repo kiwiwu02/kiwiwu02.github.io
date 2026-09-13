@@ -156,3 +156,14 @@ test('所有公开页面区块和 React 入口都接入 analytics', () => {
   assert.match(read('src/main.jsx'), /initAnalytics\(\)/)
   assert.match(read('src/App.jsx'), /observeAnalyticsSections/)
 })
+
+test('关键交互使用固定 analytics 事件名', () => {
+  const nav = read('src/components/Nav.jsx')
+  const projects = read('src/components/Projects.jsx')
+  const contact = read('src/components/Contact.jsx')
+
+  assert.match(nav, /trackAnalyticsEvent\('resume_download'/)
+  assert.match(projects, /trackAnalyticsEvent\('project_click'/)
+  assert.match(contact, /trackAnalyticsEvent\('contact_click'/)
+  assert.doesNotMatch(contact, /trackAnalyticsEvent\([^\n]*(email\.v|phone\.v|value)/)
+})

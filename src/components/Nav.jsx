@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { GraduationCap, Briefcase as BriefcaseSimple, GitBranch, At, DownloadSimple, Moon, Sun } from '@phosphor-icons/react'
 import { applyTheme, getInitialTheme, getNextTheme, persistTheme, THEMES } from '../lib/theme'
 import { navigateToSection } from '../lib/sectionNavigation'
+import { trackAnalyticsEvent } from '../lib/analytics'
 
 const NAV_ITEMS = [
   { id: 'education', label: '教育经历' },
@@ -97,7 +98,7 @@ export default function Nav() {
               ? <Sun className="theme-toggle-icon" weight="regular" aria-hidden="true" focusable="false" />
               : <Moon className="theme-toggle-icon" weight="regular" aria-hidden="true" focusable="false" />}
           </button>
-          <a className="btn btn-primary btn-sm" href={resumeHref} download="Kiwi-Wu-Resume.pdf">
+          <a className="btn btn-primary btn-sm" href={resumeHref} download="Kiwi-Wu-Resume.pdf" onClick={() => trackAnalyticsEvent('resume_download')}>
             下载简历
             <DownloadSimple className="nav-resume-icon" weight="regular" aria-hidden="true" focusable="false" />
           </a>
