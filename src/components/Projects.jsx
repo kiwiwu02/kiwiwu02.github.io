@@ -95,7 +95,7 @@ function ProjectItem({ project, index, featured = false }) {
 
 export default function Projects() {
   return (
-    <section className="sec-pad work-section" id="work" data-snap-page="work">
+    <section className="sec-pad work-section" id="work" data-snap-page="work" data-analytics-section="work">
       <div className="shell">
         <div className="proj-head">
           <Reveal>

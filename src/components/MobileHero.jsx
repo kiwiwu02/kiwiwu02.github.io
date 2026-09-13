@@ -47,7 +47,7 @@ function AnimatedHeadlineLine({ text, className = '' }) {
 
 export default function MobileHero() {
   return (
-    <section className="m-hero" id="top" data-snap-page="hero">
+    <section className="m-hero" id="top" data-snap-page="hero" data-analytics-section="hero">
       <div className="shell m-hero-inner">
         <h1 className="m-hero-title" aria-label={profile.heroHeadline}>
           <AnimatedHeadlineLine text={mobileHeadlineIntro} />

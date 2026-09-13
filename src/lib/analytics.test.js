@@ -1,5 +1,8 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
+
+const read = (path) => readFileSync(new URL('../../' + path, import.meta.url), 'utf8')
 
 async function loadAnalytics() {
   try {
@@ -137,4 +140,19 @@ test('每个区块只记录一次 section_view，并能清理 observer', async (
   assert.deepEqual(observed, sections)
   assert.deepEqual(calls, [['section_view', { section: 'hero' }]])
   assert.equal(disconnected, true)
+})
+
+test('所有公开页面区块和 React 入口都接入 analytics', () => {
+  for (const path of [
+    'src/components/Hero.jsx',
+    'src/components/MobileHero.jsx',
+    'src/components/About.jsx',
+    'src/components/Experience.jsx',
+    'src/components/Projects.jsx',
+    'src/components/Contact.jsx',
+  ]) {
+    assert.match(read(path), /data-analytics-section=/)
+  }
+  assert.match(read('src/main.jsx'), /initAnalytics\(\)/)
+  assert.match(read('src/App.jsx'), /observeAnalyticsSections/)
 })

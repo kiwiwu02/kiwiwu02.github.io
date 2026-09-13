@@ -148,6 +148,7 @@ export default function Contact() {
       className={`contact${footerIntent ? ' has-footer-intent' : ''}`}
       id="contact"
       data-snap-page="contact"
+      data-analytics-section="contact"
       onPointerMove={handleFooterPointerMove}
       onPointerLeave={handleFooterPointerLeave}
     >

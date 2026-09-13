@@ -12,7 +12,7 @@ const awardGroupsByInstitution = groupEducationHonors(awards).reduce((groups, aw
 
 export default function About() {
   return (
-    <section className="sec-pad about-section" id="education" data-snap-page="education">
+    <section className="sec-pad about-section" id="education" data-snap-page="education" data-analytics-section="education">
       <div className="shell">
         <div className="about-heading">
           <h2 className="sec-title">
