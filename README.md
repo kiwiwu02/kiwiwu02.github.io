@@ -26,6 +26,17 @@ npm test             # 运行测试
 
 首次使用时，在仓库的 **Settings → Pages → Build and deployment → Source** 中选择 **GitHub Actions**。如果你的默认分支不是 `main`，请同步修改工作流里的分支名。
 
+### Umami 访问统计
+
+网站使用 Umami Cloud 记录匿名访问数据，后台登录 Umami Dashboard 查看，不在本网站公开访客列表，也不需要把 API key 放进前端。
+
+1. 在 [Umami Cloud](https://cloud.umami.is/) 创建 Website，复制 Website ID。
+2. 在 GitHub repository 的 **Settings → Secrets and variables → Actions → Variables** 中创建 `UMAMI_WEBSITE_ID`，填入 Website ID；如需自托管或自定义 tracker，再创建可选变量 `UMAMI_SCRIPT_URL`。
+3. 推送到 `main` 后等待 Pages workflow 完成，在 Umami Dashboard 查看 Sessions、访问时间、粗略位置、设备、来源和 Events。
+4. 能看到的访问内容包括页面路径/标题、访问主机名、来源页、UTM 来源参数、页面区块浏览，以及简历、项目和联系方式按钮的分类点击事件。
+5. Umami 只保留匿名访客会话和国家/地区/城市级粗略位置，不记录原始 IP、姓名、邮箱、手机号、GPS 或精确地址；事件也不会上传实际联系方式、复制内容或用户输入。
+6. 本地或线上没有配置 `VITE_UMAMI_WEBSITE_ID` 时，页面照常运行，只是不发送统计。tracker 地址必须使用 HTTPS。
+
 ### 页面里的图全变成破图 / 只剩 alt 文字？
 
 资源请求失败，基本就是**开发服务器没在跑**（端口上没有监听）。重新 `npm run dev` 后刷新页面即可。

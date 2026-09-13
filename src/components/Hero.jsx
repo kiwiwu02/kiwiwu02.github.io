@@ -11,7 +11,7 @@ const heroHeadlineCenter = heroHeadlineLastIndex / 2
 
 export default function Hero() {
   return (
-    <section className="hero" id="top" data-snap-page="hero">
+    <section className="hero" id="top" data-snap-page="hero" data-analytics-section="hero">
       <HeroBackground />
       <div className="hero-veil" />
       <div className="hero-grid-lines" />

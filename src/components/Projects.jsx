@@ -3,6 +3,7 @@ import { allProjects } from '../data'
 import { navigateToSection } from '../lib/sectionNavigation'
 import { GitBranch, Globe } from '@phosphor-icons/react'
 import { GitHubIcon } from './icons'
+import { trackAnalyticsEvent } from '../lib/analytics'
 
 function getProjectLinks(project) {
   if (Array.isArray(project.links)) return project.links
@@ -18,7 +19,7 @@ function orderProjectLinks(links) {
   return [...links].sort((a, b) => Number(a.type === 'github') - Number(b.type === 'github'))
 }
 
-function ProjectLinkIcon({ link, interactive }) {
+function ProjectLinkIcon({ link, interactive, project }) {
   const isGithub = link.type === 'github'
   const actionLabel = link.type === 'github' ? '查看项目' : '体验项目'
   const label = `${actionLabel}：${isGithub ? 'GitHub' : '网页'}`
@@ -36,6 +37,7 @@ function ProjectLinkIcon({ link, interactive }) {
         aria-label={label}
         title={actionLabel}
         data-tooltip={actionLabel}
+        onClick={() => trackAnalyticsEvent('project_click', { project, linkType: link.type })}
       >
         {icon}
       </a>
@@ -67,7 +69,7 @@ function ProjectItem({ project, index, featured = false }) {
       </div>
       <div className="project-link-icons" aria-label={projectLinks.length ? '项目链接' : undefined}>
         {projectLinks.length ? projectLinks.map((link) => (
-          <ProjectLinkIcon key={`${link.type}-${link.href}`} link={link} interactive={hasIndependentLinks} />
+          <ProjectLinkIcon key={`${link.type}-${link.href}`} link={link} project={project.title} interactive={hasIndependentLinks} />
         )) : <span className="project-link-empty">暂无展示</span>}
       </div>
     </>
@@ -82,6 +84,7 @@ function ProjectItem({ project, index, featured = false }) {
           target="_blank"
           rel="noopener noreferrer"
           data-featured={featured ? 'true' : undefined}
+          onClick={() => trackAnalyticsEvent('project_click', { project: project.title, linkType: projectLinks[0].type })}
         >
           {rowContent}
         </a>
@@ -96,7 +99,7 @@ function ProjectItem({ project, index, featured = false }) {
 
 export default function Projects() {
   return (
-    <section className="sec-pad work-section" id="work" data-snap-page="work">
+    <section className="sec-pad work-section" id="work" data-snap-page="work" data-analytics-section="work">
       <div className="shell">
         <div className="proj-head">
           <Reveal onDoubleClick={(event) => navigateToSection(event, 'work')}>
@@ -106,7 +109,7 @@ export default function Projects() {
             </h2>
           </Reveal>
           <Reveal delay="d2">
-            <a className="btn btn-ghost btn-sm" href="https://github.com/kiwiwu02?tab=repositories" target="_blank" rel="noopener noreferrer">
+            <a className="btn btn-ghost btn-sm" href="https://github.com/kiwiwu02?tab=repositories" target="_blank" rel="noopener noreferrer" onClick={() => trackAnalyticsEvent('project_click', { project: 'all-projects', linkType: 'github' })}>
               <GitHubIcon className="projects-all-link-icon" />
               <span>查看全部</span>
             </a>

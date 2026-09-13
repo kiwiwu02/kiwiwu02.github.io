@@ -4,6 +4,7 @@ import Reveal from './Reveal'
 import { GitHubIcon } from './icons'
 import { profile } from '../data'
 import { navigateToSection } from '../lib/sectionNavigation'
+import { trackAnalyticsEvent } from '../lib/analytics'
 
 function MailIcon() {
   return (
@@ -125,6 +126,10 @@ export default function Contact() {
   }, [])
 
   const handleCopy = async (kind, value) => {
+    if (kind === 'email' || kind === 'phone') {
+      trackAnalyticsEvent('contact_click', { channel: kind })
+    }
+
     try {
       await copyText(value)
       setCopied(kind)
@@ -149,6 +154,7 @@ export default function Contact() {
       className={`contact${footerIntent ? ' has-footer-intent' : ''}`}
       id="contact"
       data-snap-page="contact"
+      data-analytics-section="contact"
       onPointerMove={handleFooterPointerMove}
       onPointerLeave={handleFooterPointerLeave}
     >
@@ -173,11 +179,11 @@ export default function Contact() {
           <div className="contact-actions" ref={contactActionsRef}>
             <CopyContactButton kind="email" value={email.v} Icon={MailIcon} copied={copied} onCopy={handleCopy} />
             <CopyContactButton className="mobile-phone-copy" kind="phone" value={phone.v} displayValue={`+86 ${phone.v}`} Icon={PhoneIcon} copied={copied} onCopy={handleCopy} />
-            <a className="btn btn-ghost mobile-phone-link" href={`tel:+86${phone.v.replace(/\D/g, '')}`} aria-label={`拨打电话 +86 ${phone.v}`}>
+            <a className="btn btn-ghost mobile-phone-link" href={`tel:+86${phone.v.replace(/\D/g, '')}`} aria-label={`拨打电话 +86 ${phone.v}`} onClick={() => trackAnalyticsEvent('contact_click', { channel: 'phone' })}>
               <PhoneIcon />
               +86 {phone.v}
             </a>
-            <a className="btn btn-ghost" href="https://github.com/kiwiwu02" target="_blank" rel="noopener noreferrer"><GitHubIcon />github.com/kiwiwu02</a>
+            <a className="btn btn-ghost" href="https://github.com/kiwiwu02" target="_blank" rel="noopener noreferrer" onClick={() => trackAnalyticsEvent('contact_click', { channel: 'github' })}><GitHubIcon />github.com/kiwiwu02</a>
           </div>
           <span className={`copy-feedback ${isContactCopied ? 'is-visible' : ''}`} role="status" aria-live="polite">
             {isContactCopied ? '已复制' : ''}
@@ -208,7 +214,7 @@ export default function Contact() {
             <BilibiliIcon />
           </a>
           <span className="contact-social-divider" aria-hidden="true">｜</span>
-          <a className="contact-social contact-social-tooltip" href="https://github.com/kiwiwu02" target="_blank" rel="noopener noreferrer" aria-label="打开 GitHub 主页" title="打开 GitHub 主页" data-hover-hint="打开 GitHub 主页">
+          <a className="contact-social contact-social-tooltip" href="https://github.com/kiwiwu02" target="_blank" rel="noopener noreferrer" aria-label="打开 GitHub 主页" title="打开 GitHub 主页" data-hover-hint="打开 GitHub 主页" onClick={() => trackAnalyticsEvent('contact_click', { channel: 'github' })}>
             <GitHubIcon className="contact-social-icon contact-social-icon-github" />
           </a>
           <span className={`footer-copy-feedback ${copied === 'wechat' ? 'is-visible' : ''}`} role="status" aria-live="polite">

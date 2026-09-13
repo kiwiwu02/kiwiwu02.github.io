@@ -149,7 +149,7 @@ export default function Experience() {
   const closeDetails = () => setSelectedItem(null)
 
   return (
-    <section className="sec-pad experience-section" id="experience" data-snap-page="experience">
+    <section className="sec-pad experience-section" id="experience" data-snap-page="experience" data-analytics-section="experience">
       <div className="shell">
         <Reveal onDoubleClick={(event) => navigateToSection(event, 'experience')}>
           <h2 className="sec-title">
