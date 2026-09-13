@@ -151,7 +151,7 @@ export default function Experience() {
   return (
     <section className="sec-pad experience-section" id="experience" data-snap-page="experience" data-analytics-section="experience">
       <div className="shell">
-        <Reveal onDoubleClick={(event) => navigateToSection(event, 'experience')}>
+        <Reveal onClick={(event) => navigateToSection(event, 'experience')}>
           <h2 className="sec-title">
             <BriefcaseSimple className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
             实习经历

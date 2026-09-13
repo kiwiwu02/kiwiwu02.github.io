@@ -161,7 +161,7 @@ export default function Contact() {
       <div className="contact-glow" />
       <div className="shell contact-inner">
         <Reveal>
-          <div className="contact-title-anchor" onDoubleClick={(event) => navigateToSection(event, 'contact')}>
+          <div className="contact-title-anchor" onClick={(event) => navigateToSection(event, 'contact')}>
             <h2 className="contact-title">
               <span className="hover-accent contact-title-line">正在<em>寻找 2027 届秋招</em>机会</span><br />
               <span className="hover-accent contact-title-line">聚焦 <em>AI Agent / 大模型应用</em>方向</span>

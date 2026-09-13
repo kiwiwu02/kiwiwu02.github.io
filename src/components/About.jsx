@@ -15,7 +15,7 @@ export default function About() {
   return (
     <section className="sec-pad about-section" id="education" data-snap-page="education" data-analytics-section="education">
       <div className="shell">
-        <div className="about-heading" onDoubleClick={(event) => navigateToSection(event, 'education')}>
+        <div className="about-heading" onClick={(event) => navigateToSection(event, 'education')}>
           <h2 className="sec-title">
             <GraduationCap className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
             教育经历

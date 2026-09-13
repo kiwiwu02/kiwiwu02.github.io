@@ -102,7 +102,7 @@ export default function Projects() {
     <section className="sec-pad work-section" id="work" data-snap-page="work" data-analytics-section="work">
       <div className="shell">
         <div className="proj-head">
-          <Reveal onDoubleClick={(event) => navigateToSection(event, 'work')}>
+          <Reveal onClick={(event) => navigateToSection(event, 'work')}>
             <h2 className="sec-title">
               <GitBranch className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
               项目经历
