@@ -19,6 +19,11 @@ function orderProjectLinks(links) {
   return [...links].sort((a, b) => Number(a.type === 'github') - Number(b.type === 'github'))
 }
 
+function handleProjectHeadingClick(event) {
+  if (event.target.closest?.('a, button, [role="button"]')) return
+  navigateToSection(event, 'work')
+}
+
 function ProjectLinkIcon({ link, interactive, project }) {
   const isGithub = link.type === 'github'
   const actionLabel = link.type === 'github' ? '查看项目' : '体验项目'
@@ -101,8 +106,8 @@ export default function Projects() {
   return (
     <section className="sec-pad work-section" id="work" data-snap-page="work" data-analytics-section="work">
       <div className="shell">
-        <div className="proj-head">
-          <Reveal onClick={(event) => navigateToSection(event, 'work')}>
+        <div className="proj-head" onClick={handleProjectHeadingClick}>
+          <Reveal>
             <h2 className="sec-title">
               <GitBranch className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
               项目经历
