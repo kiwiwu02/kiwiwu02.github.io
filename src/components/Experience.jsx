@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { Briefcase as BriefcaseSimple, X } from '@phosphor-icons/react'
 import Reveal from './Reveal'
 import { experience } from '../data'
+import { navigateToSection } from '../lib/sectionNavigation'
 import { splitIntoHighlightParts } from '../lib/experienceDetails'
 
 const FOCUSABLE_SELECTOR = [
@@ -150,7 +151,7 @@ export default function Experience() {
   return (
     <section className="sec-pad experience-section" id="experience" data-snap-page="experience">
       <div className="shell">
-        <Reveal>
+        <Reveal onDoubleClick={(event) => navigateToSection(event, 'experience')}>
           <h2 className="sec-title">
             <BriefcaseSimple className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
             实习经历

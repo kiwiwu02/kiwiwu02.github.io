@@ -2,6 +2,7 @@ import Reveal from './Reveal'
 import { GraduationCap } from '@phosphor-icons/react'
 import { awards, education } from '../data'
 import { groupEducationHonors } from '../lib/aboutAwards'
+import { navigateToSection } from '../lib/sectionNavigation'
 
 const awardGroupsByInstitution = groupEducationHonors(awards).reduce((groups, award) => {
   const institution = award.institution || ''
@@ -14,7 +15,7 @@ export default function About() {
   return (
     <section className="sec-pad about-section" id="education" data-snap-page="education">
       <div className="shell">
-        <div className="about-heading">
+        <div className="about-heading" onDoubleClick={(event) => navigateToSection(event, 'education')}>
           <h2 className="sec-title">
             <GraduationCap className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
             教育经历

@@ -3,6 +3,7 @@ import Pet from './Pet'
 import Reveal from './Reveal'
 import { GitHubIcon } from './icons'
 import { profile } from '../data'
+import { navigateToSection } from '../lib/sectionNavigation'
 
 function MailIcon() {
   return (
@@ -154,10 +155,12 @@ export default function Contact() {
       <div className="contact-glow" />
       <div className="shell contact-inner">
         <Reveal>
-          <h2 className="contact-title">
-            <span className="hover-accent contact-title-line">正在<em>寻找 2027 届秋招</em>机会</span><br />
-            <span className="hover-accent contact-title-line">聚焦 <em>AI Agent / 大模型应用</em>方向</span>
-          </h2>
+          <div className="contact-title-anchor" onDoubleClick={(event) => navigateToSection(event, 'contact')}>
+            <h2 className="contact-title">
+              <span className="hover-accent contact-title-line">正在<em>寻找 2027 届秋招</em>机会</span><br />
+              <span className="hover-accent contact-title-line">聚焦 <em>AI Agent / 大模型应用</em>方向</span>
+            </h2>
+          </div>
           <p className="contact-sub contact-sub-desktop hover-accent">
             如果你正在寻找 AI Agent / 大模型应用方向的工程师，或者也对 Agent 架构、RAG 与 AI 产品工程化感兴趣，欢迎联系我。
           </p>

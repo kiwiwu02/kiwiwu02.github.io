@@ -86,6 +86,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  --pet-embed-height: clamp(140px, 38vw, 170px);
   height: clamp(210px, 52vw, 230px);
   margin-top: 0;
   padding-top: 1.25rem;
@@ -125,6 +126,4 @@
     height: clamp(120px, 32vw, 145px);
     padding-top: 0.75rem;
   }
-
-  .m-hero-pet .pet-sprite { height: clamp(108px, 30vw, 125px) !important; }
 }

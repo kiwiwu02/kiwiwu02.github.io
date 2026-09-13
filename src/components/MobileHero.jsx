@@ -66,7 +66,7 @@ export default function MobileHero() {
         </nav>
 
         <div className="m-hero-pet">
-          <Pet mode="embed" profile="hero" height="clamp(190px, 48vw, 210px)" autoWave />
+          <Pet mode="embed" profile="hero" height="clamp(140px, 38vw, 170px)" autoWave />
         </div>
       </div>
     </section>

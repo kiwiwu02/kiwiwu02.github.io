@@ -1,5 +1,6 @@
 import Reveal from './Reveal'
 import { allProjects } from '../data'
+import { navigateToSection } from '../lib/sectionNavigation'
 import { GitBranch, Globe } from '@phosphor-icons/react'
 import { GitHubIcon } from './icons'
 
@@ -98,7 +99,7 @@ export default function Projects() {
     <section className="sec-pad work-section" id="work" data-snap-page="work">
       <div className="shell">
         <div className="proj-head">
-          <Reveal>
+          <Reveal onDoubleClick={(event) => navigateToSection(event, 'work')}>
             <h2 className="sec-title">
               <GitBranch className="sec-title-icon" size="1em" weight="regular" aria-hidden="true" focusable="false" />
               项目经历
